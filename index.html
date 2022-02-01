@@ -22,9 +22,6 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-    .favorites img {
-      width: 150px;
-    }
   </style>
   <body>
     <div id="app"></div>
@@ -49,7 +46,10 @@
       // 고양이 이미지
       const CatItem = ({img}) => (
         <li>
-          <img src={img}/>
+          <img
+            src={img}
+            style={{ width: "150px" }}
+          />
         </li>
       )
 
