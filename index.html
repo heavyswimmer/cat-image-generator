@@ -36,10 +36,14 @@
       const Title = (props) => <h1>{props.children}</h1>;
 
       // 입력폼
-      const Form = ({handleFormSubmit}) => {
+      const Form = ({ handleFormSubmit }) => {
         return (
           <form onSubmit={handleFormSubmit}>
-            <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+            <input
+              type="text"
+              name="name"
+              placeholder="영어 대사를 입력해주세요" 
+            />
             <button type="submit">생성</button>
           </form>
         );
@@ -56,13 +60,7 @@
       );
 
       // 메인 사진
-      const MainCard = ({ img }) => {
-        function handleHeartClick() {
-          console.log("하트 클릭함");
-        }
-        function handleHeartMouseOver() {
-          console.log("하트 스쳐 지나감");
-        }
+      const MainCard = ({ img, handleHeartClick }) => {
         return (
           <div className="main-card">
             <img
@@ -70,22 +68,16 @@
               alt="고양이"
               width="400"
             />
-            <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
+            <button onClick={handleHeartClick}>🤍</button>
           </div>
         );
       };
 
       // 즐겨찾기된 사진
-      const Favorites = () => {
-        const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
-        const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
-        const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
-      
-        const cats = [CAT1, CAT2];
-
+      const Favorites = ({ favorites }) => {
         return (
           <ul className="favorites">
-            {cats.map((cat) => (
+            {favorites.map((cat) => (
               <CatItem img={cat} key={cat} />
             ))}
           </ul>
@@ -99,9 +91,8 @@
         const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
         const [counter, setCounter] = React.useState(1);
-        // const counter = counterState[0];
-        // const setCounter = counterState[1];
         const [mainCat, setMainCat] = React.useState(CAT1);
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
 
         console.log("카운터", counter);
 
@@ -112,15 +103,20 @@
           setMainCat(CAT2);
         }
 
+        function handleHeartClick() {
+          console.log("하트 클릭함");
+          setFavorites([...favorites, CAT3]);
+        }
+
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
-            <Form handleFormSubmit={handleFormSubmit}/>
-            <MainCard img={mainCat}/>
-            <Favorites />
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard img={mainCat} handleHeartClick={handleHeartClick} />
+            <Favorites favorites={favorites} />
           </div>
         );
-      }
+      };
 
       const paintHere = document.querySelector("#app");
 
