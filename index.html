@@ -36,11 +36,26 @@
       const Title = (props) => <h1>{props.children}</h1>;
 
       // 입력폼
-      const Form = ({ handleFormSubmit }) => {
+      const Form = () => {
+        const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
         const [value, setValue] = React.useState("");
+        const [errorMessage, setErrorMessage] = React.useState("");
 
         function handleInputChange(e) {
-          setValue(e.target.value.toUpperCase());
+          const userValue = e.target.value;
+          setErrorMessage("");
+          if (includesHangul(userValue)) {
+            setErrorMessage("한글은 입력하실 수 없습니다.");
+          }
+          setValue(userValue.toUpperCase());
+        }
+
+        function handleFormSubmit(e) {
+          e.preventDefault();
+          setErrorMessage("");
+          if (value === "") {
+            setErrorMessage("대사가 입력되지 않았습니다.");
+          }
         }
 
         return (
@@ -53,6 +68,7 @@
               onChange={handleInputChange}
             />
             <button type="submit">생성</button>
+            <p style={{ color: "red" }}>{errorMessage}</p>
           </form>
         );
       };
